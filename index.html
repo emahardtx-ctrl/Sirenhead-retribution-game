@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siren Head: Retribution - Verificación</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0b0b0d;
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(180, 20, 20, 0.15) 0%, transparent 70%),
+                linear-gradient(to bottom, #070709, #0d0d11);
+            color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Nav superior decorativo estilo Siren Head */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+            z-index: 100;
+        }
+
+        .logo-title {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-subtitle {
+            color: #dc2626;
+            font-size: 11px;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background: rgba(15, 15, 18, 0.95);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 6px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(220, 38, 38, 0.1);
+            position: relative;
+            margin-top: 60px;
+        }
+
+        /* Badge superior decorativo */
+        .badge {
+            display: inline-block;
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.4);
+            color: #ef4444;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            padding: 4px 12px;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
+        }
+
+        p {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: #ffffff;
+            border: 1px solid #f87171;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            border-color: #4ade80;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #22c55e 0%, #166534 100%);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+        }
+
+        .blocked-box {
+            background: rgba(127, 29, 29, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .blocked-box h3 {
+            color: #ef4444;
+            font-size: 16px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .recaptcha-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            filter: invert(0.9) hue-rotate(180deg); /* Adapta visualmente el reCAPTCHA al tema oscuro */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de navegación decorativa -->
+    <div class="navbar">
+        <div>
+            <span class="logo-title">SIREN HEAD</span>
+            <span class="logo-subtitle">RETRIBUTION</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <span class="badge">ZONA DE DESCARGA SEGURA</span>
+
+        <!-- ESTADO INICIAL: Verificando VPN -->
+        <div id="step-checking" class="step-container active">
+            <h2>Detección de Conexión</h2>
+            <p>Comprobando parámetros de red y seguridad antes de otorgar acceso...</p>
+        </div>
+
+        <!-- PASO 1: Restricción de VPN (si aplica) -->
+        <div id="step-vpn-blocked" class="step-container">
+            <div class="blocked-box">
+                <h3>Acceso Restringido</h3>
+                <p>Se ha detectado el uso de una red proxy o VPN (como Tor).</p>
+            </div>
+            <p>Por motivos de seguridad, desactiva la VPN para poder obtener el ejecutable.</p>
+            <button class="btn" onclick="checkVpn()">Reintentar Verificación</button>
+        </div>
+
+        <!-- PASO 2: Geolocalización -->
+        <div id="step-geolocation" class="step-container">
+            <h2>Geolocalización</h2>
+            <p>Conexión directa confirmada. Haz clic a continuación para autorizar la validación de región.</p>
+            <button class="btn" onclick="requestLocation()">Solicitar Ubicación ⚡</button>
+        </div>
+
+        <!-- PASO 3: Verificación de seguridad (CAPTCHA) -->
+        <div id="step-captcha" class="step-container">
+            <h2>Validación de Humanidad</h2>
+            <p>Completa la prueba de seguridad para autorizar la descarga del instalador.</p>
+            <div class="recaptcha-wrapper">
+                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onCaptchaResolved"></div>
+            </div>
+        </div>
+
+        <!-- PASO 4: Descarga del archivo -->
+        <div id="step-download" class="step-container">
+            <h2>Acceso Concedido</h2>
+            <p>Verificación completada con éxito. Puedes proceder a descargar el paquete del juego.</p>
+            <button id="btn-download" class="btn btn-download">Descargar Juego ⚡</button>
+        </div>
+    </div>
+
+    <script>
+        function showStep(stepId) {
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        window.onload = checkVpn;
+
+        // 1. Detección de VPN
+        async function checkVpn() {
+            showStep('step-checking');
+            try {
+                const res = await fetch('/api/check-vpn');
+                const data = await res.json();
+
+                if (data.isVpn) {
+                    showStep('step-vpn-blocked');
+                } else {
+                    showStep('step-geolocation');
+                }
+            } catch (err) {
+                showStep('step-geolocation');
+            }
+        }
+
+        // 2. Geolocalización
+        function requestLocation() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        showStep('step-captcha');
+                    },
+                    (error) => {
+                        alert("Es necesario otorgar el permiso de ubicación para continuar.");
+                    }
+                );
+            } else {
+                showStep('step-captcha');
+            }
+        }
+
+        // 3. CAPTCHA
+        async function onCaptchaResolved(token) {
+            try {
+                const res = await fetch('/api/verify-captcha', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ captchaToken: token })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    const btn = document.getElementById('btn-download');
+                    btn.onclick = () => {
+                        window.location.href = `/api/download/${data.downloadToken}`;
+                    };
+                    showStep('step-download');
+                } else {
+                    alert("Error en la validación del CAPTCHA.");
+                    grecaptcha.reset();
+                }
+            } catch (err) {
+                alert("Error de respuesta del servidor.");
+            }
+        }
+    </script>
+</body>
+</html>
