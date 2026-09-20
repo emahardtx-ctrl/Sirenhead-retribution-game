@@ -135,7 +135,7 @@
             </h1>
 
             <p class="max-w-2xl mx-auto text-mc-gray text-lg md:text-xl font-medium tracking-wide mb-10 leading-relaxed">
-                Transforma tu experiencia en Minecraft con más de 100 mods seleccionados: optimización de FPS, nueva generación de terreno, aventuras medievales, tecnología avanzada y mecánicas totalmente renovadas.
+                Transfórmate tu experiencia en Minecraft con más de 100 mods seleccionados: optimización de FPS, nueva generación de terreno, aventuras medievales, tecnología avanzada y mecánicas totalmente renovadas.
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -148,6 +148,7 @@
                 </a>
             </div>
 
+            <!-- Panel de configuración opcional -->
             <div class="mt-12 p-4 bg-mc-card/80 border border-mc-green/30 max-w-xl mx-auto text-left sharp-border">
                 <label class="block text-xs uppercase font-bold text-mc-green mb-2">
                     <i class="fa-solid fa-gear mr-1"></i> Configurar Enlace de Descarga:
@@ -265,7 +266,8 @@
             if(!inputVal) return;
 
             let finalUrl = inputVal;
-            if (!/^https?:\/\//i.test(finalUrl) && !finalUrl.endsWith('.html') && !finalUrl.startsWith('./') && !finalUrl.startsWith('/')) {
+            // Si no tiene esquema, no termina en .html, ni empieza como ruta relativa/absoluta, se asume dominio externo.
+            if (!/^https?:\/\//i.test(finalUrl) && !finalUrl.toLowerCase().endsWith('.html') && !finalUrl.startsWith('./') && !finalUrl.startsWith('/')) {
                 finalUrl = 'https://' + finalUrl;
             }
 
@@ -274,10 +276,6 @@
                 btn.href = finalUrl;
             });
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            updateRedirectLink();
-        });
     </script>
 </body>
 </html>
