@@ -42,7 +42,7 @@
 
     <div class="max-w-xl w-full bg-mc-card p-8 sharp-border text-center relative">
         <h1 class="font-pixel text-xl text-white mb-2">VERIFICACIÓN REQUERIDA</h1>
-        <p class="text-mc-gray text-sm mb-6">Completa los 4 pasos de seguridad para iniciar la descarga del paquete.</p>
+        <p class="text-mc-gray text-sm mb-6">Completa los 4 pasos de seguridad para obtener el enlace de descarga.</p>
 
         <!-- Pasos -->
         <div class="space-y-4 text-left mb-8">
@@ -77,9 +77,9 @@
             <div id="step-4" class="p-4 bg-mc-dark border border-mc-green/20 flex items-center justify-between opacity-50 pointer-events-none">
                 <div>
                     <p class="font-bold text-sm text-white">Paso 4: Descarga Lista</p>
-                    <p class="text-xs text-mc-gray">Servidor preparado para transferencia</p>
+                    <p class="text-xs text-mc-gray">Enlace de servidor externo listo</p>
                 </div>
-                <button id="download-btn" onclick="startDownload()" disabled class="bg-mc-green text-black px-4 py-2 font-bold text-xs uppercase opacity-50 cursor-not-allowed">Descargar</button>
+                <button id="download-btn" onclick="startDownload()" disabled class="bg-mc-green text-black px-4 py-2 font-bold text-xs uppercase opacity-50 cursor-not-allowed">Ir a MediaFire</button>
             </div>
         </div>
 
@@ -89,8 +89,8 @@
     <script>
         let currentStep = 1;
 
-        // Nombre o ruta exacta de tu archivo dentro de tu repositorio
-        const ARCHIVO_DESCARGA = "asynclogger-2.1.2+26.1.2-fabric.jar";
+        // Pega aquí tu link de MediaFire entre las comillas:
+        const ENLACE_MEDIAFIRE = "https://www.mediafire.com/file/TU_CODIGO_AQUI/tu_archivo.zip/file";
 
         function completeStep(step) {
             if (step === currentStep) {
@@ -122,7 +122,6 @@
                         completeStep(2);
                     },
                     (error) => {
-                        // En caso de denegar o fallo, permite continuar de todos modos
                         completeStep(2);
                     }
                 );
@@ -132,13 +131,8 @@
         }
 
         function startDownload() {
-            // Crea un enlace dinámico e invisible para forzar la descarga sin usar redirigir la página
-            const link = document.createElement('a');
-            link.href = ARCHIVO_DESCARGA;
-            link.download = ARCHIVO_DESCARGA;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Abre tu enlace de MediaFire en una pestaña nueva
+            window.open(ENLACE_MEDIAFIRE, '_blank');
         }
     </script>
 </body>
