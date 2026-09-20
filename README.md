@@ -29,17 +29,3 @@ El proyecto consta de dos módulos principales:
    - Archivo local de registros de actividad (`ubicaciones_registradas.txt`).
 
 ---
-
-## Guía de Instalación y Ejecución Local
-
-### Requisitos Previos
-* Node.js (Versión 18 o superior)
-* ngrok
-
-### 1. Inicializar el Servidor en la PC
-
-1. Abre la terminal o PowerShell en la carpeta del proyecto y ejecuta:
-
-```bash
-npm init -y
-npm install express cors
