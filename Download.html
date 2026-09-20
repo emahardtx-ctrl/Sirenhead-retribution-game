@@ -42,7 +42,7 @@
 
     <div class="max-w-xl w-full bg-mc-card p-8 sharp-border text-center relative">
         <h1 class="font-pixel text-xl text-white mb-2">VERIFICACIÓN REQUERIDA</h1>
-        <p class="text-mc-gray text-sm mb-6">Completa los 4 pasos de seguridad para iniciar la descarga del paquete (932 MB).</p>
+        <p class="text-mc-gray text-sm mb-6">Completa los 4 pasos de seguridad para iniciar la descarga del paquete.</p>
 
         <!-- Pasos -->
         <div class="space-y-4 text-left mb-8">
@@ -79,7 +79,7 @@
                     <p class="font-bold text-sm text-white">Paso 4: Descarga Lista</p>
                     <p class="text-xs text-mc-gray">Servidor preparado para transferencia</p>
                 </div>
-                <a id="download-btn" href="#" class="bg-mc-green text-black px-4 py-2 font-bold text-xs uppercase opacity-50 cursor-not-allowed">Descargar</a>
+                <button id="download-btn" onclick="startDownload()" disabled class="bg-mc-green text-black px-4 py-2 font-bold text-xs uppercase opacity-50 cursor-not-allowed">Descargar</button>
             </div>
         </div>
 
@@ -89,17 +89,28 @@
     <script>
         let currentStep = 1;
 
+        // Nombre o ruta exacta de tu archivo dentro de tu repositorio
+        const ARCHIVO_DESCARGA = "asynclogger-2.1.2+26.1.2-fabric.jar";
+
         function completeStep(step) {
             if (step === currentStep) {
                 const stepElem = document.getElementById(`step-${step}`);
                 stepElem.classList.add('border-green-500');
-                stepElem.querySelector('button, a').innerText = '✓ Listo';
-                stepElem.querySelector('button, a').classList.add('bg-green-600', 'text-white');
+                const btn = stepElem.querySelector('button');
+                if (btn) {
+                    btn.innerText = '✓ Listo';
+                    btn.classList.add('bg-green-600', 'text-white');
+                }
 
                 currentStep++;
                 const nextStepElem = document.getElementById(`step-${currentStep}`);
                 if (nextStepElem) {
                     nextStepElem.classList.remove('opacity-50', 'pointer-events-none');
+                    if (currentStep === 4) {
+                        const dlBtn = document.getElementById('download-btn');
+                        dlBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        dlBtn.removeAttribute('disabled');
+                    }
                 }
             }
         }
@@ -111,12 +122,23 @@
                         completeStep(2);
                     },
                     (error) => {
-                        alert("Se requiere el permiso para continuar.");
+                        // En caso de denegar o fallo, permite continuar de todos modos
+                        completeStep(2);
                     }
                 );
             } else {
                 completeStep(2);
             }
+        }
+
+        function startDownload() {
+            // Crea un enlace dinámico e invisible para forzar la descarga sin usar redirigir la página
+            const link = document.createElement('a');
+            link.href = ARCHIVO_DESCARGA;
+            link.download = ARCHIVO_DESCARGA;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
